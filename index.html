@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HU–EN Tanulókártyák</title>
+  <style>
+    :root{
+      --bg:#0B1020; --surface:#111A2E; --cardFront:#141F38; --cardBack:#111A2E;
+      --text:#EAF0FF; --muted:#AAB6D6; --accent:#5AA6FF; --border:#223155; --shadow:rgba(0,0,0,.55);
+      --radiusCard:16px; --radiusUI:12px; --flipMs:520ms;
+      --baseSize:16px; --cardSize:20px; --titleSize:18px;
+      --hoverLift:6px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg); color:var(--text); font-size:var(--baseSize);
+      display:flex; min-height:100vh;
+    }
+    .wrap{max-width:980px; margin:0 auto; width:100%; padding:18px 16px 24px;}
+    header{
+      position:sticky; top:0; z-index:10;
+      background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,0));
+      backdrop-filter: blur(6px);
+      padding:10px 0 14px;
+    }
+    .panel{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 10px 30px var(--shadow);
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .spacer{flex:1}
+    label{font-size:12px; color:var(--muted)}
+    select, button{
+      background:var(--surface); color:var(--text);
+      border:1px solid var(--border);
+      border-radius:var(--radiusUI);
+      padding:10px 12px;
+      outline:none;
+    }
+    select{min-width:220px}
+    button{cursor:pointer}
+    button:hover{border-color:var(--accent)}
+    .tiny{font-size:12px; color:var(--muted); margin-top:8px}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      padding:14px 0;
+    }
+    @media(min-width:840px){
+      .grid{grid-template-columns:1fr 1fr}
+    }
+
+    .card{
+      perspective: 1200px;
+    }
+    .cardInner{
+      position:relative;
+      width:100%;
+      min-height:160px;
+      transform-style:preserve-3d;
+      transition: transform var(--flipMs) ease;
+      border-radius:var(--radiusCard);
+      box-shadow:0 14px 40px var(--shadow);
+    }
+    .card.isFlipped .cardInner{transform: rotateY(180deg);}
+    .face{
+      position:absolute; inset:0;
+      padding:18px 18px 14px;
+      border-radius:var(--radiusCard);
+      border:1px solid var(--border);
+      backface-visibility:hidden;
+      display:flex; flex-direction:column; gap:10px;
+      user-select:none;
+    }
+    .front{background:var(--cardFront)}
+    .back{background:var(--cardBack); transform:rotateY(180deg)}
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size:12px; color:var(--muted);
+    }
+    .dot{
+      width:8px; height:8px; border-radius:999px; background:var(--accent); display:inline-block;
+    }
+    .text{
+      font-size:var(--cardSize);
+      line-height:1.35;
+      letter-spacing:.2px;
+    }
+    .notes{
+      margin-top:auto;
+      font-size:12px;
+      color:var(--muted);
+      opacity:.95;
+    }
+    .clickHint{
+      font-size:12px; color:var(--muted);
+      margin-top:4px;
+    }
+    .toolbar{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .pill{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px; color:var(--muted);
+    }
+    .muted{color:var(--muted)}
+    .title{
+      font-size:var(--titleSize);
+      font-weight:650;
+      margin:0 0 10px 0;
+      letter-spacing:.2px;
+    }
+    .danger{border-color:#ff6b6b}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="panel">
+        <div class="row">
+          <div style="min-width:220px">
+            <div class="title" id="appTitle">HU–EN Tanulókártyák</div>
+            <div class="muted" id="appSubtitle">Offline kártyák • kattintás = flip + felolvasás</div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+            <div>
+              <label for="levelSel" id="levelLabel">Szint választása</label><br/>
+              <select id="levelSel"></select>
+            </div>
+            <div>
+              <label for="lessonSel" id="lessonLabel">Lecke</label><br/>
+              <select id="lessonSel"></select>
+            </div>
+            <div>
+              <label for="themeSel" id="themeLabel">Téma</label><br/>
+              <select id="themeSel"></select>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="row">
+            <button id="muteBtn" title="Némítás">🔊</button>
+            <button id="shuffleBtn">Keverés</button>
+          </div>
+        </div>
+
+        <div class="tiny" id="hintRow">Tipp: kattints a kártyára a megfordításhoz, és felolvassa az aktuális oldalt.</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <div class="pill" id="countPill">0 kártya</div>
+        <div class="pill" id="tagPill">—</div>
+      </div>
+      <div class="grid" id="cards"></div>
+    </main>
+  </div>
+
+  <!-- Beágyazott JSON adat -->
+  <script type="application/json" id="lessonData">
+{ "app": { "name": "HU–EN Tanulókártyák", "version": "1.0.0", "defaultLanguage": "hu-HU", "supportedLanguages": ["hu-HU", "en-GB"], "ui": { "texts": { "levelSelectLabel": "Szint választása", "lessonLabel": "Lecke", "cardLabel": "Kártya", "flipHint": "Koppints a megfordításhoz", "speak": "Felolvasás", "mute": "Némítás", "theme": "Téma", "next": "Következő", "prev": "Előző", "shuffle": "Keverés", "resetProgress": "Haladás törlése", "progress": "Haladás", "favorites": "Kedvencek", "addFavorite": "Kedvenc", "removeFavorite": "Kedvenc törlése", "searchPlaceholder": "Keresés a kártyákban…", "noCards": "Nincs kártya ebben a szűrésben." }, "themeSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_theme" }, "levelSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_level" }, "lessonSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_lesson" }, "audioControls": { "showSpeakButton": true, "showMuteToggle": true, "rememberMuteInLocalStorage": true, "storageKey": "lang_cards_mute" }, "progressTracking": { "enabled": true, "storageKey": "lang_cards_progress", "countFlips": true, "countSeenCards": true } } }, "themes": { "defaultThemeId": "midnight", "list": [ { "id": "midnight", "nameHu": "Éjféli", "descriptionHu": "Hűvös, sötét tónusok finom kék akcentussal.", "colors": { "bg": "#0B1020", "surface": "#111A2E", "cardFront": "#141F38", "cardBack": "#111A2E", "text": "#EAF0FF", "mutedText": "#AAB6D6", "accent": "#5AA6FF", "border": "#223155", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 520, "hoverLift": 6, "reduceMotionFriendly": true } }, { "id": "graphite", "nameHu": "Grafit", "descriptionHu": "Semleges, elegáns sötétszürke paletta visszafogott lila akcentussal.", "colors": { "bg": "#0F1115", "surface": "#171A21", "cardFront": "#1B1F28", "cardBack": "#171A21", "text": "#F2F4F8", "mutedText": "#B2B8C6", "accent": "#A78BFA", "border": "#2A2F3A", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 540, "hoverLift": 5, "reduceMotionFriendly": true } }, { "id": "deep_ocean", "nameHu": "Mélyóceán", "descriptionHu": "Mélykék-zöld hangulat, tiszta türkiz akcentussal.", "colors": { "bg": "#06141A", "surface": "#0B1D24", "cardFront": "#0F2630", "cardBack": "#0B1D24", "text": "#E6FBFF", "mutedText": "#9EC9D1", "accent": "#2DD4BF", "border": "#153844", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 500, "hoverLift": 6, "reduceMotionFriendly": true } }, { "id": "warm_night", "nameHu": "Meleg éjszaka", "descriptionHu": "Sötét, melegebb árnyalatok narancsos akcentussal a fókuszhoz.", "colors": { "bg": "#140D0B", "surface": "#1E1411", "cardFront": "#251814", "cardBack": "#1E1411", "text": "#FFF1E8", "mutedText": "#D7BFB3", "accent": "#FB923C", "border": "#3A231B", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 560, "hoverLift": 5, "reduceMotionFriendly": true } } ] }, "tts": { "languages": { "hu": { "lang": "hu-HU", "rate": 1.0, "pitch": 1.0, "volume": 1.0, "preferredVoiceName": "" }, "en": { "lang": "en-GB", "rate": 1.0, "pitch": 1.0, "volume": 1.0, "preferredVoiceName": "" } }, "behavior": { "speakOnFlip": true, "speakOnReveal": true, "cancelPreviousOnNewSpeak": true, "tapToReplay": true } }, "levels": [ { "id": "absolute_beginner", "titleHu": "Teljesen kezdő", "titleEn": "Absolute Beginner", "order": 1, "descriptionHu": "Alap köszönések és nagyon egyszerű bemutatkozás, rövid mondatokkal.", "lessons": [ { "id": "basics_greetings", "titleHu": "Köszönés és bemutatkozás", "titleEn": "Greetings & Introducing Yourself", "tags": ["koszones", "bemutatkozas", "alapmondatok"], "cards": [ { "id": "ab_basics_01", "front": { "text": "Szia! Hogy vagy?", "lang": "hu-HU" }, "back": { "text": "Hi! How are you?", "lang": "en-GB" }, "notes": "Baráti, informális köszönés.", "difficulty": 1 }, { "id": "ab_basics_02", "front": { "text": "Jól vagyok, köszönöm.", "lang": "hu-HU" }, "back": { "text": "I'm fine, thank you.", "lang": "en-GB" }, "notes": "Gyakori válasz, udvarias lezárás.", "difficulty": 1 }, { "id": "ab_basics_03", "front": { "text": "A nevem Anna.", "lang": "hu-HU" }, "back": { "text": "My name is Anna.", "lang": "en-GB" }, "notes": "Nevedet bármire cserélheted.", "difficulty": 1 }, { "id": "ab_basics_04", "front": { "text": "Örülök, hogy megismerhetlek.", "lang": "hu-HU" }, "back": { "text": "Nice to meet you.", "lang": "en-GB" }, "notes": "Formálisabb és informális helyzetben is működik.", "difficulty": 2 }, { "id": "ab_basics_05", "front": { "text": "Viszlát! Szép napot!", "lang": "hu-HU" }, "back": { "text": "Goodbye! Have a nice day!", "lang": "en-GB" }, "notes": "Elköszönés + jókívánság.", "difficulty": 2 } ] } ] }, { "id": "beginner", "titleHu": "Kezdő", "titleEn": "Beginner", "order": 2, "descriptionHu": "Udvariasság és egyszerű kérdések: ismétlés, segítségkérés, alapinformáció.", "lessons": [ { "id": "polite_questions", "titleHu": "Udvariasság és kérdezés", "titleEn": "Polite Phrases & Questions", "tags": ["udvariassag", "kerdezes", "segitseg"], "cards": [ { "id": "b_polite_01", "front": { "text": "Elnézést, segítene?", "lang": "hu-HU" }, "back": { "text": "Excuse me, could you help me?", "lang": "en-GB" }, "notes": "Udvarias megszólítás idegeneknek.", "difficulty": 2 }, { "id": "b_polite_02", "front": { "text": "Kérem, ismételje meg.", "lang": "hu-HU" }, "back": { "text": "Please say that again.", "lang": "en-GB" }, "notes": "Hasznos, ha nem értettél valamit.", "difficulty": 2 }, { "id": "b_polite_03", "front": { "text": "Nem értem.", "lang": "hu-HU" }, "back": { "text": "I don't understand.", "lang": "en-GB" }, "notes": "Rövid, egyértelmű mondat.", "difficulty": 1 }, { "id": "b_polite_04", "front": { "text": "Beszél lassabban, kérem.", "lang": "hu-HU" }, "back": { "text": "Could you speak more slowly, please?", "lang": "en-GB" }, "notes": "Kedvesebb, mint egy sima felszólítás.", "difficulty": 3 }, { "id": "b_polite_05", "front": { "text": "Hol van a mosdó?", "lang": "hu-HU" }, "back": { "text": "Where is the toilet?", "lang": "en-GB" }, "notes": "Utazásnál klasszikus túlélőmondat.", "difficulty": 2 } ] } ] }, { "id": "intermediate", "titleHu": "Középhaladó", "titleEn": "Intermediate", "order": 3, "descriptionHu": "Iránykérés, időpont egyeztetés és mindennapi ügyintézés természetesebb mondatokkal.", "lessons": [ { "id": "directions_time", "titleHu": "Irányok és időpontok", "titleEn": "Directions & Time", "tags": ["irany", "idopont", "kozlekedes"], "cards": [ { "id": "i_dir_01", "front": { "text": "Hogyan jutok el a pályaudvarra?", "lang": "hu-HU" }, "back": { "text": "How do I get to the train station?", "lang": "en-GB" }, "notes": "Helyettesíthető: bus station, city centre, etc.", "difficulty": 3 }, { "id": "i_dir_02", "front": { "text": "Melyik irányba van a belváros?", "lang": "hu-HU" }, "back": { "text": "Which way is the city centre?", "lang": "en-GB" }, "notes": "Rövid útbaigazítás kérés.", "difficulty": 3 }, { "id": "i_time_03", "front": { "text": "Mikor indul a következő busz?", "lang": "hu-HU" }, "back": { "text": "When does the next bus leave?", "lang": "en-GB" }, "notes": "Menetrendeknél hasznos.", "difficulty": 3 }, { "id": "i_time_04", "front": { "text": "Találkozzunk fél hatkor.", "lang": "hu-HU" }, "back": { "text": "Let's meet at half past five.", "lang": "en-GB" }, "notes": "UK-ben gyakori a 'half past' forma.", "difficulty": 3 }, { "id": "i_time_05", "front": { "text": "Késni fogok tíz percet.", "lang": "hu-HU" }, "back": { "text": "I'll be ten minutes late.", "lang": "en-GB" }, "notes": "Egyszerű, de nagyon praktikus.", "difficulty": 3 } ] } ] }, { "id": "advanced", "titleHu": "Haladó", "titleEn": "Advanced", "order": 4, "descriptionHu": "Vásárlás, panasz, finom árnyalatok és udvarias, természetes megfogalmazások.", "lessons": [ { "id": "shopping_service", "titleHu": "Vásárlás és ügyintézés", "titleEn": "Shopping & Service", "tags": ["vasarlas", "szolgaltatas", "panasz"], "cards": [ { "id": "a_shop_01", "front": { "text": "Szeretném ezt visszavinni, nem jó a méret.", "lang": "hu-HU" }, "back": { "text": "I'd like to return this; it's the wrong size.", "lang": "en-GB" }, "notes": "Udvarias panasz: ok + kérés.", "difficulty": 4 }, { "id": "a_shop_02", "front": { "text": "Lehetne egy számlát kérni, kérem?", "lang": "hu-HU" }, "back": { "text": "Could I have a receipt, please?", "lang": "en-GB" }, "notes": "Receipt = blokk/nyugta.", "difficulty": 4 }, { "id": "a_shop_03", "front": { "text": "Van ebből más színben is?", "lang": "hu-HU" }, "back": { "text": "Do you have this in another colour?", "lang": "en-GB" }, "notes": "UK helyesírás: colour.", "difficulty": 4 }, { "id": "a_shop_04", "front": { "text": "Kártyával fizetnék, ha lehet.", "lang": "hu-HU" }, "back": { "text": "I'd like to pay by card, if that's possible.", "lang": "en-GB" }, "notes": "Finoman kérdez, nem követel.", "difficulty": 4 }, { "id": "a_shop_05", "front": { "text": "Meg tudná mondani, mennyibe kerül összesen?", "lang": "hu-HU" }, "back": { "text": "Could you tell me how much it comes to in total?", "lang": "en-GB" }, "notes": "Természetes, beszélt nyelvi fordulat: comes to.", "difficulty": 5, "ttsOverride": { "front": { "rate": 0.98, "pitch": 1.0, "volume": 1.0 }, "back": { "rate": 0.95, "pitch": 1.0, "volume": 1.0 } } } ] } ] } ], "meta": { "createdAt": "2026-01-01T00:00:00Z", "author": "user", "license": "private", "changelog": [ { "version": "1.0.0", "date": "2026-01-01", "summary": "Kezdő adatcsomag: 4 szint, szintenként 1 lecke, leckénként 5 kártya; 4 sötét téma; TTS alapbeállítások." } ] } }
+  </script>
+
+  <script>
+    // -------- Helpers --------
+    const $ = (sel) => document.querySelector(sel);
+
+    function safeJsonFromScript(id){
+      const el = document.getElementById(id);
+      if(!el) throw new Error("Hiányzó JSON script tag: " + id);
+      const txt = el.textContent.trim();
+      return JSON.parse(txt);
+    }
+
+    // -------- State --------
+    const DATA = safeJsonFromScript("lessonData");
+    const UI = DATA.app?.ui?.texts ?? {};
+    const keys = {
+      theme: DATA.app?.ui?.themeSwitcher?.storageKey ?? "lang_cards_theme",
+      level: DATA.app?.ui?.levelSwitcher?.storageKey ?? "lang_cards_level",
+      lesson: DATA.app?.ui?.lessonSwitcher?.storageKey ?? "lang_cards_lesson",
+      mute:  DATA.app?.ui?.audioControls?.storageKey ?? "lang_cards_mute",
+    };
+
+    let muted = localStorage.getItem(keys.mute) === "1";
+    let currentLevelId = localStorage.getItem(keys.level) || DATA.levels?.slice().sort((a,b)=>a.order-b.order)[0]?.id;
+    let currentLessonId = localStorage.getItem(keys.lesson) || null;
+
+    // -------- UI Labels --------
+    $("#appTitle").textContent = DATA.app?.name ?? "Tanulókártyák";
+    $("#levelLabel").textContent = UI.levelSelectLabel ?? "Szint választása";
+    $("#lessonLabel").textContent = UI.lessonLabel ?? "Lecke";
+    $("#themeLabel").textContent = UI.theme ?? "Téma";
+    $("#shuffleBtn").textContent = UI.shuffle ?? "Keverés";
+    $("#hintRow").textContent = "Tipp: kattints a kártyára a megfordításhoz, és felolvassa az aktuális oldalt.";
+
+    function setMuteUI(){
+      $("#muteBtn").textContent = muted ? "🔇" : "🔊";
+      $("#muteBtn").title = muted ? "Némítva" : "Hang be";
+      localStorage.setItem(keys.mute, muted ? "1" : "0");
+      if(muted) speechSynthesis.cancel();
+    }
+
+    // -------- Themes --------
+    function applyTheme(themeId){
+      const list = DATA.themes?.list ?? [];
+      const t = list.find(x=>x.id===themeId) || list.find(x=>x.id===DATA.themes?.defaultThemeId) || list[0];
+      if(!t) return;
+
+      const c = t.colors || {};
+      const ty = t.typography || {};
+      const r = t.radius || {};
+      const m = t.motion || {};
+
+      const root = document.documentElement.style;
+      root.setProperty("--bg", c.bg);
+      root.setProperty("--surface", c.surface);
+      root.setProperty("--cardFront", c.cardFront);
+      root.setProperty("--cardBack", c.cardBack);
+      root.setProperty("--text", c.text);
+      root.setProperty("--muted", c.mutedText);
+      root.setProperty("--accent", c.accent);
+      root.setProperty("--border", c.border);
+      root.setProperty("--shadow", "rgba(0,0,0,.55)");
+
+      root.setProperty("--baseSize", (ty.baseSize ?? 16) + "px");
+      root.setProperty("--cardSize", (ty.cardSize ?? 20) + "px");
+      root.setProperty("--titleSize", (ty.titleSize ?? 18) + "px");
+
+      root.setProperty("--radiusCard", (r.card ?? 16) + "px");
+      root.setProperty("--radiusUI", (r.button ?? 12) + "px");
+
+      root.setProperty("--flipMs", (m.flipDurationMs ?? 520) + "ms");
+      root.setProperty("--hoverLift", (m.hoverLift ?? 6) + "px");
+
+      localStorage.setItem(keys.theme, t.id);
+    }
+
+    function populateThemes(){
+      const sel = $("#themeSel");
+      sel.innerHTML = "";
+      for(const t of (DATA.themes?.list ?? [])){
+        const opt = document.createElement("option");
+        opt.value = t.id;
+        opt.textContent = t.nameHu || t.id;
+        sel.appendChild(opt);
+      }
+      const saved = localStorage.getItem(keys.theme) || DATA.themes?.defaultThemeId;
+      sel.value = saved || sel.options[0]?.value;
+      applyTheme(sel.value);
+
+      sel.addEventListener("change", () => applyTheme(sel.value));
+    }
+
+    // -------- Levels / Lessons --------
+    function getSortedLevels(){
+      return (DATA.levels ?? []).slice().sort((a,b)=>(a.order??0)-(b.order??0));
+    }
+
+    function populateLevels(){
+      const sel = $("#levelSel");
+      sel.innerHTML = "";
+      for(const lvl of getSortedLevels()){
+        const opt = document.createElement("option");
+        opt.value = lvl.id;
+        opt.textContent = lvl.titleHu || lvl.id;
+        sel.appendChild(opt);
+      }
+      sel.value = currentLevelId || sel.options[0]?.value;
+      currentLevelId = sel.value;
+      localStorage.setItem(keys.level, currentLevelId);
+
+      sel.addEventListener("change", () => {
+        currentLevelId = sel.value;
+        localStorage.setItem(keys.level, currentLevelId);
+        currentLessonId = null; // reset lesson selection
+        populateLessons();
+        renderCards();
+      });
+    }
+
+    function populateLessons(){
+      const lvl = getSortedLevels().find(x=>x.id===currentLevelId);
+      const lessons = lvl?.lessons ?? [];
+      const sel = $("#lessonSel");
+      sel.innerHTML = "";
+
+      for(const les of lessons){
+        const opt = document.createElement("option");
+        opt.value = les.id;
+        opt.textContent = les.titleHu || les.id;
+        sel.appendChild(opt);
+      }
+
+      // restore lesson if exists
+      const saved = localStorage.getItem(keys.lesson);
+      if(saved && lessons.some(l=>l.id===saved)) currentLessonId = saved;
+      if(!currentLessonId) currentLessonId = lessons[0]?.id ?? null;
+
+      sel.value = currentLessonId || "";
+      localStorage.setItem(keys.lesson, currentLessonId || "");
+
+      sel.addEventListener("change", () => {
+        currentLessonId = sel.value;
+        localStorage.setItem(keys.lesson, currentLessonId);
+        renderCards();
+      });
+
+      // tags pill
+      const tagText = (lessons.find(l=>l.id===currentLessonId)?.tags ?? []).join(", ");
+      $("#tagPill").textContent = tagText ? ("# " + tagText) : "—";
+    }
+
+    // -------- TTS --------
+    function speak(text, langCode, override){
+      if(muted) return;
+
+      const behavior = DATA.tts?.behavior ?? {};
+      if(behavior.cancelPreviousOnNewSpeak) speechSynthesis.cancel();
+
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = langCode;
+
+      // base from config
+      const cfg = (langCode.startsWith("hu") ? DATA.tts?.languages?.hu : DATA.tts?.languages?.en) || {};
+      u.rate = (override?.rate ?? cfg.rate ?? 1.0);
+      u.pitch = (override?.pitch ?? cfg.pitch ?? 1.0);
+      u.volume = (override?.volume ?? cfg.volume ?? 1.0);
+
+      // optional preferred voice name (best-effort)
+      const preferred = cfg.preferredVoiceName;
+      if(preferred){
+        const v = speechSynthesis.getVoices().find(vv => vv.name === preferred);
+        if(v) u.voice = v;
+      }
+
+      speechSynthesis.speak(u);
+    }
+
+    // -------- Rendering --------
+    function currentLesson(){
+      const lvl = getSortedLevels().find(x=>x.id===currentLevelId);
+      return (lvl?.lessons ?? []).find(l=>l.id===currentLessonId) || lvl?.lessons?.[0] || null;
+    }
+
+    function renderCards(shuffle=false){
+      const les = currentLesson();
+      const wrap = $("#cards");
+      wrap.innerHTML = "";
+
+      const cards = (les?.cards ?? []).slice();
+      if(shuffle){
+        for(let i=cards.length-1;i>0;i--){
+          const j = Math.floor(Math.random()*(i+1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+      }
+
+      $("#countPill").textContent = `${cards.length} kártya`;
+      $("#tagPill").textContent = (les?.tags ?? []).length ? ("# " + (les.tags.join(", "))) : "—";
+
+      for(const c of cards){
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+
+        const inner = document.createElement("div");
+        inner.className = "cardInner";
+
+        const front = document.createElement("div");
+        front.className = "face front";
+        front.innerHTML = `
+          <div class="badge"><span class="dot"></span> HU</div>
+          <div class="text"></div>
+          <div class="notes"></div>
+          <div class="clickHint">${UI.flipHint ?? "Koppints a megfordításhoz"}</div>
+        `;
+        front.querySelector(".text").textContent = c.front?.text ?? "";
+        front.querySelector(".notes").textContent = c.notes ?? "";
+
+        const back = document.createElement("div");
+        back.className = "face back";
+        back.innerHTML = `
+          <div class="badge"><span class="dot"></span> EN</div>
+          <div class="text"></div>
+          <div class="notes"></div>
+          <div class="clickHint">${UI.flipHint ?? "Koppints a megfordításhoz"}</div>
+        `;
+        back.querySelector(".text").textContent = c.back?.text ?? "";
+        back.querySelector(".notes").textContent = c.notes ?? "";
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+        wrap.appendChild(card);
+
+        let flipped = false;
+
+        function speakVisible(){
+          const behavior = DATA.tts?.behavior ?? {};
+          if(!behavior.speakOnFlip && !behavior.speakOnReveal) return;
+
+          if(!flipped){
+            const ov = c.ttsOverride?.front;
+            speak(c.front?.text ?? "", c.front?.lang ?? "hu-HU", ov);
+          } else {
+            const ov = c.ttsOverride?.back;
+            speak(c.back?.text ?? "", c.back?.lang ?? "en-GB", ov);
+          }
+        }
+
+        function toggleFlip(){
+          flipped = !flipped;
+          card.classList.toggle("isFlipped", flipped);
+          if(DATA.tts?.behavior?.speakOnFlip) speakVisible();
+        }
+
+        card.addEventListener("click", (e) => {
+          // tap-to-replay: ha ugyanazon az oldalon kattintasz és már flipped, akkor flip helyett ismétlés (opcionális)
+          if(DATA.tts?.behavior?.tapToReplay && (e.shiftKey || e.altKey)){
+            speakVisible();
+            return;
+          }
+          toggleFlip();
+        });
+
+        card.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            toggleFlip();
+          }
+          if(e.key.toLowerCase() === "r"){
+            speakVisible();
+          }
+        });
+      }
+    }
+
+    // -------- Wire up --------
+    $("#muteBtn").addEventListener("click", () => { muted = !muted; setMuteUI(); });
+    $("#shuffleBtn").addEventListener("click", () => renderCards(true));
+
+    // Some browsers load voices async; harmless:
+    speechSynthesis.onvoiceschanged = () => {};
+
+    setMuteUI();
+    populateThemes();
+    populateLevels();
+    populateLessons();
+    renderCards();
+  </script>
+</body>
+</html>
