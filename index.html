@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="hu">
 <head>
@@ -205,7 +206,567 @@
 
   <!-- Beágyazott JSON adat -->
   <script type="application/json" id="lessonData">
-{ "app": { "name": "HU–EN Tanulókártyák", "version": "1.0.0", "defaultLanguage": "hu-HU", "supportedLanguages": ["hu-HU", "en-GB"], "ui": { "texts": { "levelSelectLabel": "Szint választása", "lessonLabel": "Lecke", "cardLabel": "Kártya", "flipHint": "Koppints a megfordításhoz", "speak": "Felolvasás", "mute": "Némítás", "theme": "Téma", "shuffle": "Keverés" }, "themeSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_theme" }, "levelSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_level" }, "lessonSwitcher": { "enabled": true, "mode": "dropdown", "rememberInLocalStorage": true, "storageKey": "lang_cards_lesson" }, "audioControls": { "showMuteToggle": true, "rememberMuteInLocalStorage": true, "storageKey": "lang_cards_mute" } } }, "themes": { "defaultThemeId": "midnight", "list": [ { "id": "midnight", "nameHu": "Éjféli", "descriptionHu": "Hűvös, sötét tónusok finom kék akcentussal.", "colors": { "bg": "#0B1020", "surface": "#111A2E", "cardFront": "#141F38", "cardBack": "#111A2E", "text": "#EAF0FF", "mutedText": "#AAB6D6", "accent": "#5AA6FF", "border": "#223155", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 520, "hoverLift": 6, "reduceMotionFriendly": true } }, { "id": "graphite", "nameHu": "Grafit", "descriptionHu": "Semleges, elegáns sötétszürke paletta visszafogott lila akcentussal.", "colors": { "bg": "#0F1115", "surface": "#171A21", "cardFront": "#1B1F28", "cardBack": "#171A21", "text": "#F2F4F8", "mutedText": "#B2B8C6", "accent": "#A78BFA", "border": "#2A2F3A", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 540, "hoverLift": 5, "reduceMotionFriendly": true } }, { "id": "deep_ocean", "nameHu": "Mélyóceán", "descriptionHu": "Mélykék-zöld hangulat, tiszta türkiz akcentussal.", "colors": { "bg": "#06141A", "surface": "#0B1D24", "cardFront": "#0F2630", "cardBack": "#0B1D24", "text": "#E6FBFF", "mutedText": "#9EC9D1", "accent": "#2DD4BF", "border": "#153844", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 500, "hoverLift": 6, "reduceMotionFriendly": true } }, { "id": "warm_night", "nameHu": "Meleg éjszaka", "descriptionHu": "Sötét, melegebb árnyalatok narancsos akcentussal a fókuszhoz.", "colors": { "bg": "#140D0B", "surface": "#1E1411", "cardFront": "#251814", "cardBack": "#1E1411", "text": "#FFF1E8", "mutedText": "#D7BFB3", "accent": "#FB923C", "border": "#3A231B", "shadow": "#000000" }, "typography": { "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "baseSize": 16, "cardSize": 20, "titleSize": 18 }, "radius": { "card": 16, "button": 12, "panel": 14 }, "motion": { "flipDurationMs": 560, "hoverLift": 5, "reduceMotionFriendly": true } } ] }, "tts": { "languages": { "hu": { "lang": "hu-HU", "rate": 1.0, "pitch": 1.0, "volume": 1.0, "preferredVoiceName": "" }, "en": { "lang": "en-GB", "rate": 1.0, "pitch": 1.0, "volume": 1.0, "preferredVoiceName": "" } }, "behavior": { "speakOnFlip": true, "speakOnReveal": true, "cancelPreviousOnNewSpeak": true, "tapToReplay": true } }, "levels": [ { "id": "absolute_beginner", "titleHu": "Teljesen kezdő", "titleEn": "Absolute Beginner", "order": 1, "descriptionHu": "Alap köszönések és nagyon egyszerű bemutatkozás, rövid mondatokkal.", "lessons": [ { "id": "basics_greetings", "titleHu": "Köszönés és bemutatkozás", "titleEn": "Greetings & Introducing Yourself", "tags": ["koszones", "bemutatkozas", "alapmondatok"], "cards": [ { "id": "ab_basics_01", "front": { "text": "Szia! Hogy vagy?", "lang": "hu-HU" }, "back": { "text": "Hi! How are you?", "lang": "en-GB" }, "notes": "Baráti, informális köszönés.", "difficulty": 1 }, { "id": "ab_basics_02", "front": { "text": "Jól vagyok, köszönöm.", "lang": "hu-HU" }, "back": { "text": "I'm fine, thank you.", "lang": "en-GB" }, "notes": "Gyakori válasz, udvarias lezárás.", "difficulty": 1 }, { "id": "ab_basics_03", "front": { "text": "A nevem Anna.", "lang": "hu-HU" }, "back": { "text": "My name is Anna.", "lang": "en-GB" }, "notes": "Nevedet bármire cserélheted.", "difficulty": 1 }, { "id": "ab_basics_04", "front": { "text": "Örülök, hogy megismerhetlek.", "lang": "hu-HU" }, "back": { "text": "Nice to meet you.", "lang": "en-GB" }, "notes": "Formálisabb és informális helyzetben is működik.", "difficulty": 2 }, { "id": "ab_basics_05", "front": { "text": "Viszlát! Szép napot!", "lang": "hu-HU" }, "back": { "text": "Goodbye! Have a nice day!", "lang": "en-GB" }, "notes": "Elköszönés + jókívánság.", "difficulty": 2 } ] } ] }, { "id": "beginner", "titleHu": "Kezdő", "titleEn": "Beginner", "order": 2, "descriptionHu": "Udvariasság és egyszerű kérdések: ismétlés, segítségkérés, alapinformáció.", "lessons": [ { "id": "polite_questions", "titleHu": "Udvariasság és kérdezés", "titleEn": "Polite Phrases & Questions", "tags": ["udvariassag", "kerdezes", "segitseg"], "cards": [ { "id": "b_polite_01", "front": { "text": "Elnézést, segítene?", "lang": "hu-HU" }, "back": { "text": "Excuse me, could you help me?", "lang": "en-GB" }, "notes": "Udvarias megszólítás idegeneknek.", "difficulty": 2 }, { "id": "b_polite_02", "front": { "text": "Kérem, ismételje meg.", "lang": "hu-HU" }, "back": { "text": "Please say that again.", "lang": "en-GB" }, "notes": "Hasznos, ha nem értettél valamit.", "difficulty": 2 }, { "id": "b_polite_03", "front": { "text": "Nem értem.", "lang": "hu-HU" }, "back": { "text": "I don't understand.", "lang": "en-GB" }, "notes": "Rövid, egyértelmű mondat.", "difficulty": 1 }, { "id": "b_polite_04", "front": { "text": "Beszél lassabban, kérem.", "lang": "hu-HU" }, "back": { "text": "Could you speak more slowly, please?", "lang": "en-GB" }, "notes": "Kedvesebb, mint egy sima felszólítás.", "difficulty": 3 }, { "id": "b_polite_05", "front": { "text": "Hol van a mosdó?", "lang": "hu-HU" }, "back": { "text": "Where is the toilet?", "lang": "en-GB" }, "notes": "Utazásnál klasszikus túlélőmondat.", "difficulty": 2 } ] } ] }, { "id": "intermediate", "titleHu": "Középhaladó", "titleEn": "Intermediate", "order": 3, "descriptionHu": "Iránykérés, időpont egyeztetés és mindennapi ügyintézés természetesebb mondatokkal.", "lessons": [ { "id": "directions_time", "titleHu": "Irányok és időpontok", "titleEn": "Directions & Time", "tags": ["irany", "idopont", "kozlekedes"], "cards": [ { "id": "i_dir_01", "front": { "text": "Hogyan jutok el a pályaudvarra?", "lang": "hu-HU" }, "back": { "text": "How do I get to the train station?", "lang": "en-GB" }, "notes": "Helyettesíthető: bus station, city centre, etc.", "difficulty": 3 }, { "id": "i_dir_02", "front": { "text": "Melyik irányba van a belváros?", "lang": "hu-HU" }, "back": { "text": "Which way is the city centre?", "lang": "en-GB" }, "notes": "Rövid útbaigazítás kérés.", "difficulty": 3 }, { "id": "i_time_03", "front": { "text": "Mikor indul a következő busz?", "lang": "hu-HU" }, "back": { "text": "When does the next bus leave?", "lang": "en-GB" }, "notes": "Menetrendeknél hasznos.", "difficulty": 3 }, { "id": "i_time_04", "front": { "text": "Találkozzunk fél hatkor.", "lang": "hu-HU" }, "back": { "text": "Let's meet at half past five.", "lang": "en-GB" }, "notes": "UK-ben gyakori a 'half past' forma.", "difficulty": 3 }, { "id": "i_time_05", "front": { "text": "Késni fogok tíz percet.", "lang": "hu-HU" }, "back": { "text": "I'll be ten minutes late.", "lang": "en-GB" }, "notes": "Egyszerű, de nagyon praktikus.", "difficulty": 3 } ] } ] }, { "id": "advanced", "titleHu": "Haladó", "titleEn": "Advanced", "order": 4, "descriptionHu": "Vásárlás, panasz, finom árnyalatok és udvarias, természetes megfogalmazások.", "lessons": [ { "id": "shopping_service", "titleHu": "Vásárlás és ügyintézés", "titleEn": "Shopping & Service", "tags": ["vasarlas", "szolgaltatas", "panasz"], "cards": [ { "id": "a_shop_01", "front": { "text": "Szeretném ezt visszavinni, nem jó a méret.", "lang": "hu-HU" }, "back": { "text": "I'd like to return this; it's the wrong size.", "lang": "en-GB" }, "notes": "Udvarias panasz: ok + kérés.", "difficulty": 4 }, { "id": "a_shop_02", "front": { "text": "Lehetne egy számlát kérni, kérem?", "lang": "hu-HU" }, "back": { "text": "Could I have a receipt, please?", "lang": "en-GB" }, "notes": "Receipt = blokk/nyugta.", "difficulty": 4 }, { "id": "a_shop_03", "front": { "text": "Van ebből más színben is?", "lang": "hu-HU" }, "back": { "text": "Do you have this in another colour?", "lang": "en-GB" }, "notes": "UK helyesírás: colour.", "difficulty": 4 }, { "id": "a_shop_04", "front": { "text": "Kártyával fizetnék, ha lehet.", "lang": "hu-HU" }, "back": { "text": "I'd like to pay by card, if that's possible.", "lang": "en-GB" }, "notes": "Finoman kérdez, nem követel.", "difficulty": 4 }, { "id": "a_shop_05", "front": { "text": "Meg tudná mondani, mennyibe kerül összesen?", "lang": "hu-HU" }, "back": { "text": "Could you tell me how much it comes to in total?", "lang": "en-GB" }, "notes": "Természetes, beszélt nyelvi fordulat: comes to.", "difficulty": 5, "ttsOverride": { "front": { "rate": 0.98, "pitch": 1.0, "volume": 1.0 }, "back": { "rate": 0.95, "pitch": 1.0, "volume": 1.0 } } } ] } ] } ] }
+{
+    "app": {
+        "name": "HU–EN Tanulókártyák",
+        "version": "1.0.0",
+        "defaultLanguage": "hu-HU",
+        "supportedLanguages": [
+            "hu-HU",
+            "en-GB"
+        ],
+        "ui": {
+            "texts": {
+                "levelSelectLabel": "Szint választása",
+                "lessonLabel": "Lecke",
+                "cardLabel": "Kártya",
+                "flipHint": "Koppints a megfordításhoz",
+                "speak": "Felolvasás",
+                "mute": "Némítás",
+                "theme": "Téma",
+                "shuffle": "Keverés"
+            },
+            "themeSwitcher": {
+                "enabled": true,
+                "mode": "dropdown",
+                "rememberInLocalStorage": true,
+                "storageKey": "lang_cards_theme"
+            },
+            "levelSwitcher": {
+                "enabled": true,
+                "mode": "dropdown",
+                "rememberInLocalStorage": true,
+                "storageKey": "lang_cards_level"
+            },
+            "lessonSwitcher": {
+                "enabled": true,
+                "mode": "dropdown",
+                "rememberInLocalStorage": true,
+                "storageKey": "lang_cards_lesson"
+            },
+            "audioControls": {
+                "showMuteToggle": true,
+                "rememberMuteInLocalStorage": true,
+                "storageKey": "lang_cards_mute"
+            }
+        }
+    },
+    "themes": {
+        "defaultThemeId": "midnight",
+        "list": [
+            {
+                "id": "midnight",
+                "nameHu": "Éjféli",
+                "descriptionHu": "Hűvös, sötét tónusok finom kék akcentussal.",
+                "colors": {
+                    "bg": "#0B1020",
+                    "surface": "#111A2E",
+                    "cardFront": "#141F38",
+                    "cardBack": "#111A2E",
+                    "text": "#EAF0FF",
+                    "mutedText": "#AAB6D6",
+                    "accent": "#5AA6FF",
+                    "border": "#223155",
+                    "shadow": "#000000"
+                },
+                "typography": {
+                    "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+                    "baseSize": 16,
+                    "cardSize": 20,
+                    "titleSize": 18
+                },
+                "radius": {
+                    "card": 16,
+                    "button": 12,
+                    "panel": 14
+                },
+                "motion": {
+                    "flipDurationMs": 520,
+                    "hoverLift": 6,
+                    "reduceMotionFriendly": true
+                }
+            },
+            {
+                "id": "graphite",
+                "nameHu": "Grafit",
+                "descriptionHu": "Semleges, elegáns sötétszürke paletta visszafogott lila akcentussal.",
+                "colors": {
+                    "bg": "#0F1115",
+                    "surface": "#171A21",
+                    "cardFront": "#1B1F28",
+                    "cardBack": "#171A21",
+                    "text": "#F2F4F8",
+                    "mutedText": "#B2B8C6",
+                    "accent": "#A78BFA",
+                    "border": "#2A2F3A",
+                    "shadow": "#000000"
+                },
+                "typography": {
+                    "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+                    "baseSize": 16,
+                    "cardSize": 20,
+                    "titleSize": 18
+                },
+                "radius": {
+                    "card": 16,
+                    "button": 12,
+                    "panel": 14
+                },
+                "motion": {
+                    "flipDurationMs": 540,
+                    "hoverLift": 5,
+                    "reduceMotionFriendly": true
+                }
+            },
+            {
+                "id": "deep_ocean",
+                "nameHu": "Mélyóceán",
+                "descriptionHu": "Mélykék-zöld hangulat, tiszta türkiz akcentussal.",
+                "colors": {
+                    "bg": "#06141A",
+                    "surface": "#0B1D24",
+                    "cardFront": "#0F2630",
+                    "cardBack": "#0B1D24",
+                    "text": "#E6FBFF",
+                    "mutedText": "#9EC9D1",
+                    "accent": "#2DD4BF",
+                    "border": "#153844",
+                    "shadow": "#000000"
+                },
+                "typography": {
+                    "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+                    "baseSize": 16,
+                    "cardSize": 20,
+                    "titleSize": 18
+                },
+                "radius": {
+                    "card": 16,
+                    "button": 12,
+                    "panel": 14
+                },
+                "motion": {
+                    "flipDurationMs": 500,
+                    "hoverLift": 6,
+                    "reduceMotionFriendly": true
+                }
+            },
+            {
+                "id": "warm_night",
+                "nameHu": "Meleg éjszaka",
+                "descriptionHu": "Sötét, melegebb árnyalatok narancsos akcentussal a fókuszhoz.",
+                "colors": {
+                    "bg": "#140D0B",
+                    "surface": "#1E1411",
+                    "cardFront": "#251814",
+                    "cardBack": "#1E1411",
+                    "text": "#FFF1E8",
+                    "mutedText": "#D7BFB3",
+                    "accent": "#FB923C",
+                    "border": "#3A231B",
+                    "shadow": "#000000"
+                },
+                "typography": {
+                    "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+                    "baseSize": 16,
+                    "cardSize": 20,
+                    "titleSize": 18
+                },
+                "radius": {
+                    "card": 16,
+                    "button": 12,
+                    "panel": 14
+                },
+                "motion": {
+                    "flipDurationMs": 560,
+                    "hoverLift": 5,
+                    "reduceMotionFriendly": true
+                }
+            }
+        ]
+    },
+    "tts": {
+        "languages": {
+            "hu": {
+                "lang": "hu-HU",
+                "rate": 1.0,
+                "pitch": 1.0,
+                "volume": 1.0,
+                "preferredVoiceName": ""
+            },
+            "en": {
+                "lang": "en-GB",
+                "rate": 1.0,
+                "pitch": 1.0,
+                "volume": 1.0,
+                "preferredVoiceName": ""
+            }
+        },
+        "behavior": {
+            "speakOnFlip": true,
+            "speakOnReveal": true,
+            "cancelPreviousOnNewSpeak": true,
+            "tapToReplay": true
+        }
+    },
+    "levels": [
+        {
+            "id": "absolute_beginner",
+            "titleHu": "Teljesen kezdő",
+            "titleEn": "Absolute Beginner",
+            "order": 1,
+            "descriptionHu": "Alap köszönések és nagyon egyszerű bemutatkozás, rövid mondatokkal.",
+            "lessons": [
+                {
+                    "id": "basics_greetings",
+                    "titleHu": "Köszönés és bemutatkozás",
+                    "titleEn": "Greetings & Introducing Yourself",
+                    "tags": [
+                        "koszones",
+                        "bemutatkozas",
+                        "alapmondatok"
+                    ],
+                    "cards": [
+                        {
+                            "id": "ab_basics_01",
+                            "front": {
+                                "text": "Szia! Hogy vagy?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Hi! How are you?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Baráti, informális köszönés.",
+                            "difficulty": 1
+                        },
+                        {
+                            "id": "ab_basics_02",
+                            "front": {
+                                "text": "Jól vagyok, köszönöm.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "I'm fine, thank you.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Gyakori válasz, udvarias lezárás.",
+                            "difficulty": 1
+                        },
+                        {
+                            "id": "ab_basics_03",
+                            "front": {
+                                "text": "A nevem Anna.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "My name is Anna.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Nevedet bármire cserélheted.",
+                            "difficulty": 1
+                        },
+                        {
+                            "id": "ab_basics_04",
+                            "front": {
+                                "text": "Örülök, hogy megismerhetlek.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Nice to meet you.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Formálisabb és informális helyzetben is működik.",
+                            "difficulty": 2
+                        },
+                        {
+                            "id": "ab_basics_05",
+                            "front": {
+                                "text": "Viszlát! Szép napot!",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Goodbye! Have a nice day!",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Elköszönés + jókívánság.",
+                            "difficulty": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "beginner",
+            "titleHu": "Kezdő",
+            "titleEn": "Beginner",
+            "order": 2,
+            "descriptionHu": "Udvariasság és egyszerű kérdések: ismétlés, segítségkérés, alapinformáció.",
+            "lessons": [
+                {
+                    "id": "polite_questions",
+                    "titleHu": "Udvariasság és kérdezés",
+                    "titleEn": "Polite Phrases & Questions",
+                    "tags": [
+                        "udvariassag",
+                        "kerdezes",
+                        "segitseg"
+                    ],
+                    "cards": [
+                        {
+                            "id": "b_polite_01",
+                            "front": {
+                                "text": "Elnézést, segítene?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Excuse me, could you help me?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Udvarias megszólítás idegeneknek.",
+                            "difficulty": 2
+                        },
+                        {
+                            "id": "b_polite_02",
+                            "front": {
+                                "text": "Kérem, ismételje meg.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Please say that again.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Hasznos, ha nem értettél valamit.",
+                            "difficulty": 2
+                        },
+                        {
+                            "id": "b_polite_03",
+                            "front": {
+                                "text": "Nem értem.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "I don't understand.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Rövid, egyértelmű mondat.",
+                            "difficulty": 1
+                        },
+                        {
+                            "id": "b_polite_04",
+                            "front": {
+                                "text": "Beszél lassabban, kérem.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Could you speak more slowly, please?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Kedvesebb, mint egy sima felszólítás.",
+                            "difficulty": 3
+                        },
+                        {
+                            "id": "b_polite_05",
+                            "front": {
+                                "text": "Hol van a mosdó?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Where is the toilet?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Utazásnál klasszikus túlélőmondat.",
+                            "difficulty": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "intermediate",
+            "titleHu": "Középhaladó",
+            "titleEn": "Intermediate",
+            "order": 3,
+            "descriptionHu": "Iránykérés, időpont egyeztetés és mindennapi ügyintézés természetesebb mondatokkal.",
+            "lessons": [
+                {
+                    "id": "directions_time",
+                    "titleHu": "Irányok és időpontok",
+                    "titleEn": "Directions & Time",
+                    "tags": [
+                        "irany",
+                        "idopont",
+                        "kozlekedes"
+                    ],
+                    "cards": [
+                        {
+                            "id": "i_dir_01",
+                            "front": {
+                                "text": "Hogyan jutok el a pályaudvarra?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "How do I get to the train station?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Helyettesíthető: bus station, city centre, etc.",
+                            "difficulty": 3
+                        },
+                        {
+                            "id": "i_dir_02",
+                            "front": {
+                                "text": "Melyik irányba van a belváros?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Which way is the city centre?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Rövid útbaigazítás kérés.",
+                            "difficulty": 3
+                        },
+                        {
+                            "id": "i_time_03",
+                            "front": {
+                                "text": "Mikor indul a következő busz?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "When does the next bus leave?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Menetrendeknél hasznos.",
+                            "difficulty": 3
+                        },
+                        {
+                            "id": "i_time_04",
+                            "front": {
+                                "text": "Találkozzunk fél hatkor.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Let's meet at half past five.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "UK-ben gyakori a 'half past' forma.",
+                            "difficulty": 3
+                        },
+                        {
+                            "id": "i_time_05",
+                            "front": {
+                                "text": "Késni fogok tíz percet.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "I'll be ten minutes late.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Egyszerű, de nagyon praktikus.",
+                            "difficulty": 3
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "advanced",
+            "titleHu": "Haladó",
+            "titleEn": "Advanced",
+            "order": 4,
+            "descriptionHu": "Vásárlás, panasz, finom árnyalatok és udvarias, természetes megfogalmazások.",
+            "lessons": [
+                {
+                    "id": "shopping_service",
+                    "titleHu": "Vásárlás és ügyintézés",
+                    "titleEn": "Shopping & Service",
+                    "tags": [
+                        "vasarlas",
+                        "szolgaltatas",
+                        "panasz"
+                    ],
+                    "cards": [
+                        {
+                            "id": "a_shop_01",
+                            "front": {
+                                "text": "Szeretném ezt visszavinni, nem jó a méret.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "I'd like to return this; it's the wrong size.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Udvarias panasz: ok + kérés.",
+                            "difficulty": 4
+                        },
+                        {
+                            "id": "a_shop_02",
+                            "front": {
+                                "text": "Lehetne egy számlát kérni, kérem?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Could I have a receipt, please?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Receipt = blokk/nyugta.",
+                            "difficulty": 4
+                        },
+                        {
+                            "id": "a_shop_03",
+                            "front": {
+                                "text": "Van ebből más színben is?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Do you have this in another colour?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "UK helyesírás: colour.",
+                            "difficulty": 4
+                        },
+                        {
+                            "id": "a_shop_04",
+                            "front": {
+                                "text": "Kártyával fizetnék, ha lehet.",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "I'd like to pay by card, if that's possible.",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Finoman kérdez, nem követel.",
+                            "difficulty": 4
+                        },
+                        {
+                            "id": "a_shop_05",
+                            "front": {
+                                "text": "Meg tudná mondani, mennyibe kerül összesen?",
+                                "lang": "hu-HU"
+                            },
+                            "back": {
+                                "text": "Could you tell me how much it comes to in total?",
+                                "lang": "en-GB"
+                            },
+                            "notes": "Természetes, beszélt nyelvi fordulat: comes to.",
+                            "difficulty": 5,
+                            "ttsOverride": {
+                                "front": {
+                                    "rate": 0.98,
+                                    "pitch": 1.0,
+                                    "volume": 1.0
+                                },
+                                "back": {
+                                    "rate": 0.95,
+                                    "pitch": 1.0,
+                                    "volume": 1.0
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
   </script>
 
   <script>
