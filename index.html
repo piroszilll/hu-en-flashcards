@@ -60319,13 +60319,22 @@
     }
 
     // -------- TTS --------
+    const TTS_LEARNER_MAP = {
+  "Thank you.": "Thank. You.",
+  "Thanks.": "Thanks.",
+  "Hi! How are you?": "Hi. How. Are. You?",
+  "How are you?": "How. Are. You?",
+  "Nice to meet you.": "Nice. To. Meet. You."
+};
+	
     function speak(text, langCode, override){
       if(muted) return;
 
       const behavior = DATA.tts?.behavior ?? {};
       if(behavior.cancelPreviousOnNewSpeak) speechSynthesis.cancel();
 
-      const u = new SpeechSynthesisUtterance(text);
+      const spokenText = TTS_LEARNER_MAP[text] ?? text;
+      const u = new SpeechSynthesisUtterance(spokenText);
       u.lang = langCode;
 
       const isHu = langCode.toLowerCase().startsWith("hu");
@@ -60476,3 +60485,4 @@
   </script>
 </body>
 </html>
+
