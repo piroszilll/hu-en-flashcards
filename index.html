@@ -60328,17 +60328,18 @@
 };
 	
     function speak(text, langCode, override){
-      if(muted) return;
+  if(muted) return;
 
-      const behavior = DATA.tts?.behavior ?? {};
-      if(behavior.cancelPreviousOnNewSpeak) speechSynthesis.cancel();
+  const behavior = DATA.tts?.behavior ?? {};
+  if(behavior.cancelPreviousOnNewSpeak) speechSynthesis.cancel();
 
-      const spokenText = TTS_LEARNER_MAP[text] ?? text;
-      const u = new SpeechSynthesisUtterance(spokenText);
-      u.lang = langCode;
+  const isHu = langCode.toLowerCase().startsWith("hu");
+  const spokenText = (!isHu ? (TTS_LEARNER_MAP[text] ?? text) : text);
 
-      const isHu = langCode.toLowerCase().startsWith("hu");
-      const cfg = (isHu ? DATA.tts?.languages?.hu : DATA.tts?.languages?.en) || {};
+  const u = new SpeechSynthesisUtterance(spokenText);
+  u.lang = langCode;
+
+  const cfg = (isHu ? DATA.tts?.languages?.hu : DATA.tts?.languages?.en) || {};
 
       let baseRate = (override?.rate ?? cfg.rate ?? 1.0);
       // Only EN gets the speed steps (slower options).
@@ -60485,4 +60486,5 @@
   </script>
 </body>
 </html>
+
 
